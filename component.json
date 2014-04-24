@@ -1,0 +1,8 @@
+{
+	"name": "tasklist",
+	"dependencies": {
+		"necolas/normalize.css": "^3.0.0"
+	},
+	"scripts": ["public/js/index.js"],
+	"styles": ["public/css/index.css"]
+}

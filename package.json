@@ -1,0 +1,24 @@
+{
+  "name": "tasklist",
+  "version": "0.0.0",
+  "description": "SImple task list and pomodoro timer. Will support tagging and organising of tasks, and estimation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "todo",
+    "task",
+    "pomodoro"
+  ],
+  "author": "Qazzian",
+  "license": "MIT",
+  "dependencies": {
+    "sequelize": "^1.7.1",
+    "sqlite3": "^2.2.3",
+    "underscore": "^1.6.0",
+    "q": "^1.0.1",
+    "koa-route": "^1.1.2",
+    "koa": "^0.5.5"
+  }
+}
