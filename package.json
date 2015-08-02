@@ -14,11 +14,12 @@
   "author": "Qazzian",
   "license": "MIT",
   "dependencies": {
-    "sequelize": "^1.7.1",
-    "sqlite3": "^2.2.3",
-    "underscore": "^1.6.0",
-    "q": "^1.0.1",
-    "koa-route": "^1.1.2",
-    "koa": "^0.5.5"
+    "sequelize": "^3.5.1"
+  },
+  "devDependencies": {
+    "duo": "^0.15.0",
+    "lodash": "^3.10.0",
+    "q": "^1.4.1",
+    "sqlite3": "^3.0.9"
   }
 }

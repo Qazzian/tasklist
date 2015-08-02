@@ -6,8 +6,7 @@
  * Set up routes for the api
  */
 
-var router = require('koa-route'),
-		koa = require('koa');
+var db = require('db');
 
-var app = koa();
+
 

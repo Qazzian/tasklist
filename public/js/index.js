@@ -2,6 +2,8 @@
  * Created by Ian on 04/04/2014.
  */
 
+ var q = require('q');
+
 var p = document.querySelector('p');
 
 setInterval(function () {

@@ -2,6 +2,9 @@
  * Index.css
  */
 
+
+@import "necolas/normalize.css";
+
 * {
 	box-sizing: border-box;
 }
