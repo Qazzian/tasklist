@@ -6,7 +6,9 @@
 
 var Sequelize = require('sequelize'),
 		Q = require('q'),
-		_ = require('underscore');
+		_ = require('lodash');
+
+var User = require('./models/user');
 
 var DEFAULT_OPTIONS = {
 	dialect: 'sqlite',
@@ -25,13 +27,12 @@ module.exports.setup = function(options){
 	db = new Sequelize(options.name, options.username, options.password, ops);
 	loadObjects(db);
 
-	db.sync().success(function(){
-		deferred.resolve();
-		console.log('it worked');
-	}).error(function(error){
-		console.log('error: ', error);
-		deferred.reject(error);
-	});
+	try {
+		db.sync();
+	}
+	catch (syncException) {
+		console.error('Database Sync Error: ', syncException);
+	}
 
 	return deferred;
 };
@@ -40,20 +41,65 @@ function loadObjects(sequelize){
 
 	var tables = {};
 
-	tables.Tag = sequelize.define('Tag', {
-		name: {type: Sequelize.STRING, allowNull: false, primaryKey: true }
-	});
+	// TODO move these definitions into separate modules
 
+	// Task - the core object of a todo list application
 	tables.Task = sequelize.define('Task', {
-		name: { type: Sequelize.STRING, allowNull: false, primaryKey: true },
+		id: { type: Sequelize.INTEGER, allowNull: false, primaryKey: true },
+		name: { type: Sequelize.STRING, allowNull: false },
 		description: Sequelize.TEXT,
 		isComplete: Sequelize.BOOLEAN,
 		priority: Sequelize.BIGINT,
 		timeEstimate: Sequelize.DATE
 	});
 
-	tables.Tag.hasMany(tables.Task);
-	tables.Task.hasMany(tables.Tag);
+	// Tasks can be tagged 
+	tables.Tag = sequelize.define('Tag', {
+		id: { type: Sequelize.INTEGER, allowNull: false, primaryKey: true },
+		name: {type: Sequelize.STRING, allowNull: false, primaryKey: true }
+	});
+
+	// TagCloud defined the relationship between Tasks and their tags
+	tables.TagCloud = sequelize.define('TagCloud', {
+		tagId: {
+			type: Sequelize.INTEGER,
+			references: {
+				model: tables.Tag,
+				key: 'id'
+			}
+		},
+		taskId: {
+			type: Sequelize.INTEGER,
+			references: {
+				model: tables.Task,
+				id: 'id'
+			}
+		}
+	});
+
+	// User - people
+	tables.User = User.defineTable(sequelize);
+
+	// Assignments - Tasks can be assigned to a single User. Users can have multiple Tasks assigned to them
+	tables.Assignments = sequelize.define('Assignments', {
+		taskId: {
+			type: Sequelize.INTEGER,
+			references: {
+				model: tables.Task,
+				id: 'id'
+			}
+		},
+		userId: {
+			type: Sequelize.INTEGER,
+			references: {
+				model: tables.User,
+				id: 'id'
+			}
+		}
+	})
+
+	// tables.Tag.hasMany(tables.Task);
+	// tables.Task.hasMany(tables.Tag);
 
 	return tables;
 }
