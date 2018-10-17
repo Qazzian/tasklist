@@ -1,5 +1,7 @@
 
-var Sequelize = require('sequelize');
+var Sequelize = require('sequelize'),
+	_ = require('lodash')
+	u = require('../lib/util');
 
 
 var tableName = 'User',
@@ -10,23 +12,37 @@ var tableName = 'User',
 		avatar: Sequelize.STRING
 	};
 
+var databaseRef;
+
 module.exports = {
 	defineTable: function(sequelize) {
-		return sequelize.define(tableName, tableAttributes);
+		databaseRef = sequelize;
+		return databaseRef.define(tableName, tableAttributes);
 	},
 
 	/**
 	 * 
 	 */
-	addUser = function(userData) {
+	add = function(userData) {
+		if (! u.validateKeys(userData, tableAttributes)) {
+			throw new Exception("invalid keyname defined");
+		}
+		return new UserClass(userData);
+	},
 
-	}
+	update = function() {
 
-	getUserById = function(id) {
+	},
 
-	}
+	remove = function() { 
 
-	getUserByEmail = function(email) {
+	},
+
+	getById = function(id) {
+
+	},
+
+	getByEmail = function(email) {
 
 	}
 
